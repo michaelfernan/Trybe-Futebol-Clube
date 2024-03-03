@@ -3,7 +3,7 @@ import db from '.';
 
 class Team extends Model {
   declare id: number;
-  declare team_name: string;
+  declare teamName: string;
 }
 
 Team.init({
@@ -12,9 +12,10 @@ Team.init({
     primaryKey: true,
     autoIncrement: true,
   },
-  team_name: {
+  teamName: {
     type: DataTypes.STRING,
     allowNull: false,
+    field: 'team_name',
   },
 }, {
   sequelize: db,

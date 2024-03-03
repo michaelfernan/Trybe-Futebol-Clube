@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import TeamService from '../services/TeamService';
 
 class TeamController {
-  public async getAll(req: Request, res: Response): Promise<Response> {
+  public static async getAll(req: Request, res: Response): Promise<Response> {
     try {
       const teams = await TeamService.getAllTeams();
       return res.status(200).json(teams);
@@ -12,7 +12,7 @@ class TeamController {
     }
   }
 
-  public async getById(req: Request, res: Response): Promise<Response> {
+  public static async getById(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
     const team = await TeamService.getTeamById(Number(id));
     if (!team) {
@@ -22,4 +22,4 @@ class TeamController {
   }
 }
 
-export default new TeamController();
+export default TeamController;
