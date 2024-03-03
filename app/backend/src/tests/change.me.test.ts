@@ -1,45 +1,37 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
-// @ts-ignore
 import chaiHttp = require('chai-http');
-
 import { app } from '../app';
-import Example from '../database/models/ExampleModel';
-
-import { Response } from 'superagent';
+import Team from '../database/models/Team';
 
 chai.use(chaiHttp);
-
 const { expect } = chai;
 
-describe('Seu teste', () => {
+describe('Endpoint /teams', () => {
   /**
-   * Exemplo do uso de stubs com tipos
+   * Teste para verificar se todos os times são retornados
    */
+  it('GET /teams - Deve retornar todos os times', async () => {
+    const res = await chai.request(app).get('/teams');
+    expect(res).to.have.status(200);
+    expect(res.body).to.be.an('array');
+  });
 
-  // let chaiHttpResponse: Response;
+  /**
+   * Teste para verificar o retorno de um time específico pelo ID
+   */
+  describe('GET /teams/:id', () => {
+    it('Deve retornar um time específico', async () => {
+      const res = await chai.request(app).get('/teams/1');
+      expect(res).to.have.status(200);
+      expect(res.body).to.be.an('object');
+      expect(res.body).to.have.property('id');
+      expect(res.body).to.have.property('teamName');
+    });
 
-  // before(async () => {
-  //   sinon
-  //     .stub(Example, "findOne")
-  //     .resolves({
-  //       ...<Seu mock>
-  //     } as Example);
-  // });
-
-  // after(()=>{
-  //   (Example.findOne as sinon.SinonStub).restore();
-  // })
-
-  // it('...', async () => {
-  //   chaiHttpResponse = await chai
-  //      .request(app)
-  //      ...
-
-  //   expect(...)
-  // });
-
-  it('Seu sub-teste', () => {
-    expect(false).to.be.eq(true);
+    it('Deve retornar 404 para um time inexistente', async () => {
+      const res = await chai.request(app).get('/teams/9999');
+      expect(res).to.have.status(404);
+    });
   });
 });
