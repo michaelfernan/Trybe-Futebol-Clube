@@ -1,4 +1,3 @@
-// src/router.ts
 import { Router } from 'express';
 import TeamController from './controllers/TeamController';
 import LoginController from './controllers/LoginController';
