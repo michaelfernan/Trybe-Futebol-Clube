@@ -1,25 +1,21 @@
-import * as jwt from 'jsonwebtoken';
+// LoginService.ts
+
 import * as bcrypt from 'bcryptjs';
 import User from '../database/models/User';
+import TokenManager from '../utils/TokenManager';
 
 class LoginService {
-  public static async authenticate(email: string, password: string): Promise<string | null> {
+  public static async authenticate(email: string, password: string): Promise<User | null> {
     const user = await User.findOne({ where: { email } });
-
-    if (!user) {
+    if (!user || !bcrypt.compareSync(password, user.password)) {
       return null;
     }
+    return user;
+  }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return null;
-    }
-
-    const token = jwt.sign({ id: user.id, role: user.role, email: user.email }, 'seu_secreto', {
-      expiresIn: '1d',
-    });
-
-    return token;
+  public static generateToken(user: User): string {
+    const payload = { id: user.id, role: user.role, email: user.email };
+    return TokenManager.generateToken(payload);
   }
 }
 
