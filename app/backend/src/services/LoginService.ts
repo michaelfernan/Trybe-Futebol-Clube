@@ -1,5 +1,3 @@
-// LoginService.ts
-
 import * as bcrypt from 'bcryptjs';
 import User from '../database/models/User';
 import TokenManager from '../utils/TokenManager';
