@@ -4,7 +4,10 @@ import MatchService from '../services/MatchService';
 class MatchController {
   public static async getAll(req: Request, res: Response) {
     try {
-      const matches = await MatchService.getAllMatches();
+      const { inProgress } = req.query;
+
+      const matches = await MatchService
+        .getMatches(typeof inProgress === 'string' ? inProgress : undefined);
       console.log(matches);
       return res.status(200).json(matches);
     } catch (error) {
