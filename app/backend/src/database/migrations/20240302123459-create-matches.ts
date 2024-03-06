@@ -1,16 +1,16 @@
 import { QueryInterface, DataTypes } from 'sequelize';
 
 module.exports = {
-  up: async (queryInterface: QueryInterface, Sequelize: typeof DataTypes) => {
+  up: async (queryInterface: QueryInterface) => {
     await queryInterface.createTable('matches', {
       id: {
-        allowNull: false,
-        autoIncrement: true,
+        type: DataTypes.INTEGER,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        autoIncrement: true,
+        allowNull: false
       },
       home_team_id: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
           model: 'teams',
@@ -19,12 +19,13 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      home_team_goals: {
-        type: Sequelize.INTEGER,
-        allowNull: false
+      home_team_goals: { 
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
       },
       away_team_id: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: {
           model: 'teams',
@@ -33,18 +34,22 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
-      away_team_goals: {
-        type: Sequelize.INTEGER,
-        allowNull: false
+      away_team_goals: { 
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
       },
       in_progress: {
-        type: Sequelize.BOOLEAN,
+        type: DataTypes.BOOLEAN,
         allowNull: false
-      }
+      },
+
+      
+     
     });
   },
 
-  down: async (queryInterface: QueryInterface, Sequelize: typeof DataTypes) => {
+  down: async (queryInterface: QueryInterface) => {
     await queryInterface.dropTable('matches');
   }
 };
