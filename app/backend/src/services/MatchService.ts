@@ -4,6 +4,7 @@ import Team from '../database/models/Team';
 
 class MatchService {
   private matchModel: typeof Match;
+
   constructor() {
     this.matchModel = Match;
   }
@@ -14,10 +15,8 @@ class MatchService {
     });
 
     const options: FindOptions = {
-      attributes: [
-        'id', 'homeTeamId', 'homeTeamGoals',
-        'awayTeamId', 'awayTeamGoals', 'inProgress',
-      ],
+      attributes: ['id',
+        'homeTeamId', 'homeTeamGoals', 'awayTeamId', 'awayTeamGoals', 'inProgress'],
       include: [teamInclude('homeTeam'), teamInclude('awayTeam')],
     };
 
@@ -26,6 +25,17 @@ class MatchService {
     }
 
     return options;
+  }
+
+  public async getAllMatches(): Promise<Match[]> {
+    try {
+      const options = MatchService.buildQueryOptions();
+      const matches = await this.matchModel.findAll(options);
+      return matches;
+    } catch (error) {
+      console.error('Error fetching matches:', error);
+      throw error;
+    }
   }
 
   public async getMatches(inProgress?: string): Promise<Match[]> {

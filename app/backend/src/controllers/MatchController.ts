@@ -6,8 +6,13 @@ class MatchController {
     try {
       const { inProgress } = req.query;
 
-      const matches = await MatchService
-        .getMatches(typeof inProgress === 'string' ? inProgress : undefined);
+      let matches;
+      if (inProgress !== undefined) {
+        matches = await MatchService.getMatches(inProgress as string);
+      } else {
+        matches = await MatchService.getAllMatches();
+      }
+
       console.log(matches);
       return res.status(200).json(matches);
     } catch (error) {
