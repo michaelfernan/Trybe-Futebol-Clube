@@ -1,19 +1,6 @@
+import TeamResult from '../Interfaces/TeamInte';
 import Match from '../database/models/Matches';
 import Team from '../database/models/Team';
-
-interface TeamResult {
-  name: string;
-  totalPoints: number;
-  totalGames: number;
-  totalVictories: number;
-  totalDraws: number;
-  totalLosses: number;
-  goalsFavor: number;
-  goalsOwn: number;
-
-  goalsBalance: number;
-  efficiency: string;
-}
 
 class LeaderboardService {
   public static async getHomeLeaderboard(): Promise<TeamResult[]> {
