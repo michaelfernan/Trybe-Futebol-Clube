@@ -5,6 +5,7 @@ import authMiddleware from './middlewares/authMiddleware';
 import validateLogin from './middlewares/validation';
 import RoleController from './controllers/RoleController';
 import MatchController from './controllers/MatchController';
+import LeaderboardController from './controllers/LeaderboardController';
 
 const router = Router();
 
@@ -18,4 +19,7 @@ router.get('/matches', MatchController.getAll);
 router.patch('/matches/:id/finish', authMiddleware, MatchController.finishMatch);
 router.patch('/matches/:id', authMiddleware, MatchController.updateMatch);
 router.post('/matches', authMiddleware, MatchController.createMatch);
+
+router.get('/leaderboard/home', LeaderboardController.getHomeLeaderboard);
+
 export default router;
