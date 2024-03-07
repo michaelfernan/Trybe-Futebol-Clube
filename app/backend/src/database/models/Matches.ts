@@ -9,6 +9,8 @@ class Match extends Model {
   declare awayTeamId: number;
   declare awayTeamGoals: number;
   declare inProgress: boolean;
+  declare createdAt?: Date;
+  declare updatedAt?: Date;
 }
 
 Match.init({
@@ -50,7 +52,10 @@ Match.init({
   modelName: 'Match',
   tableName: 'matches',
   underscored: true,
-  timestamps: true,
+
+  createdAt: 'created_at',
+  updatedAt: 'updated_at',
+  timestamps: false,
 });
 
 Match.belongsTo(Team, { as: 'homeTeam', foreignKey: 'homeTeamId' });
