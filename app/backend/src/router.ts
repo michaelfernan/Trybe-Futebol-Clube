@@ -20,6 +20,7 @@ router.patch('/matches/:id/finish', authMiddleware, MatchController.finishMatch)
 router.patch('/matches/:id', authMiddleware, MatchController.updateMatch);
 router.post('/matches', authMiddleware, MatchController.createMatch);
 
+router.get('/leaderboard', LeaderboardController.getGeneralLeaderboard);
 router.get('/leaderboard/home', LeaderboardController.getHomeLeaderboard);
 router.get('/leaderboard/away', LeaderboardController.getAwayLeaderboard);
 
