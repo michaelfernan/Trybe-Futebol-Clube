@@ -21,5 +21,6 @@ router.patch('/matches/:id', authMiddleware, MatchController.updateMatch);
 router.post('/matches', authMiddleware, MatchController.createMatch);
 
 router.get('/leaderboard/home', LeaderboardController.getHomeLeaderboard);
+router.get('/leaderboard/away', LeaderboardController.getAwayLeaderboard);
 
 export default router;

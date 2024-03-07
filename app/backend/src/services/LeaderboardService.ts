@@ -101,11 +101,10 @@ class LeaderboardService {
     updatedResult.goalsFavor += match.homeTeamGoals;
     updatedResult.goalsOwn += match.awayTeamGoals;
 
-    // Atualiza totalPoints e outras estatísticas com base nos resultados do jogo
-    if (match.homeTeamGoals > match.awayTeamGoals) { // Vitória do time da casa
+    if (match.homeTeamGoals > match.awayTeamGoals) {
       updatedResult.totalPoints += 3;
       updatedResult.totalVictories += 1;
-    } else if (match.homeTeamGoals === match.awayTeamGoals) { // Empate
+    } else if (match.homeTeamGoals === match.awayTeamGoals) {
       updatedResult.totalPoints += 1;
       updatedResult.totalDraws += 1;
     } else {
