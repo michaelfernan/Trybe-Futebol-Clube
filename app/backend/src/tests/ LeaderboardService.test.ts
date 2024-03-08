@@ -4,7 +4,7 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../app';
 import LeaderboardService from '../services/LeaderboardService';
-import { MockLeaderboard, MockMatch } from './Mocks';
+import { MockLeaderboard } from './Mocks';
 import MatchService from '../services/MatchService';
 import Match from '../database/models/Matches';
 import Team from '../database/models/Team';
