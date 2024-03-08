@@ -65,3 +65,26 @@ export const MockLeaderboard = [
     inProgress: false
   };
   
+
+  export const mockHomeMatches = [
+    { homeTeamGoals: 3, awayTeamGoals: 1,  },
+    { homeTeamGoals: 2, awayTeamGoals: 2,  },
+    { homeTeamGoals: 0, awayTeamGoals: 1,  }
+  ];
+  
+  export const mockAwayMatches = [
+    { homeTeamGoals: 2, awayTeamGoals: 3, },
+    { homeTeamGoals: 1, awayTeamGoals: 1, },
+    { homeTeamGoals: 0, awayTeamGoals: 2, }
+  ];
+  
+  const mockHomeMatches1= [
+    { 
+      homeTeamGoals: 2, 
+      awayTeamGoals: 1, 
+      homeTeam: { teamName: 'Time A' }, 
+      awayTeam: { teamName: 'Time B' }
+    },
+  
+  ];
+  

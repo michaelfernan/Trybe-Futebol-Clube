@@ -4,7 +4,7 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../app';
 import LeaderboardService from '../services/LeaderboardService';
-import { MockLeaderboard } from './Mocks';
+import { MockLeaderboard, MockMatch } from './Mocks';
 import MatchService from '../services/MatchService';
 import Match from '../database/models/Matches';
 import Team from '../database/models/Team';
@@ -138,6 +138,110 @@ describe('LeaderboardController', () => {
   });
   });
 
+  describe('getGeneralLeaderboard', () => {
+    it('deve retornar a classificação geral', async () => {
+      const mockHomeResults = [{ name: 'Time A', totalPoints: 3, totalGames: 1, totalVictories: 1, totalDraws: 0, totalLosses: 0, goalsFavor: 3, goalsOwn: 0, goalsBalance: 3, efficiency: '100.00' }];
+      const mockAwayResults = [{ name: 'Time A', totalPoints: 4, totalGames: 2, totalVictories: 1, totalDraws: 1, totalLosses: 0, goalsFavor: 3, goalsOwn: 1, goalsBalance: 2, efficiency: '66.67' }];
+  
+      sinon.stub(LeaderboardService, 'getHomeLeaderboard').resolves(mockHomeResults as any);
+      sinon.stub(LeaderboardService, 'getAwayLeaderboard').resolves(mockAwayResults as any);
+  
+      const leaderboard = await LeaderboardService.getGeneralLeaderboard();
+  
+      expect(leaderboard).to.deep.equal([
+        {
+          name: 'Time A',
+          totalPoints: 7,
+          totalGames: 3, 
+          totalVictories: 2, 
+          totalDraws: 1, 
+          totalLosses: 0, 
+          goalsFavor: 6, 
+          goalsOwn: 1, 
+          goalsBalance: 5, 
+          efficiency: '77.78' 
+        }
+      ]);
+  
+      sinon.restore();
+    });
+  });
+
 });
 
 
+
+describe('getAwayLeaderboard', () => {
+  beforeEach(() => {
+    sinon.restore(); 
+  });
+
+  it('deve retornar a classificação do time visitante', async () => {
+    const mockAwayMatches = [
+      { homeTeamGoals: 1, awayTeamGoals: 1, homeTeam: 'Time D', awayTeam: 'Time A' },
+      { homeTeamGoals: 0, awayTeamGoals: 2, homeTeam: 'Time E', awayTeam: 'Time A' }
+    ];
+    sinon.stub(Match, 'findAll').resolves(mockAwayMatches as any);
+
+    const leaderboard = await LeaderboardService.getAwayLeaderboard();
+
+    expect(leaderboard).to.deep.equal([
+      {
+        name: 'Time A',
+        totalPoints: 4,
+        totalGames: 2,
+        totalVictories: 1,
+        totalDraws: 1,
+        totalLosses: 0,
+        goalsFavor: 3,
+        goalsOwn: 1,
+        goalsBalance: 2,
+        efficiency: '66.67'
+      }
+    ]);
+  });
+});
+
+
+describe('getHomeLeaderboard', () => {
+  beforeEach(() => {
+    sinon.restore(); 
+  });
+
+  it('deve retornar a classificação do time da casa', async () => {
+    const mockHomeMatches = [
+      { homeTeamGoals: 2, awayTeamGoals: 1, homeTeam: 'Time A', awayTeam: 'Time B' },
+      { homeTeamGoals: 0, awayTeamGoals: 3, homeTeam: 'Time C', awayTeam: 'Time A' }
+    ];
+    sinon.stub(Match, 'findAll').resolves(mockHomeMatches as any);
+
+    const leaderboard = await LeaderboardService.getHomeLeaderboard();
+
+    expect(leaderboard).to.deep.equal([
+      {
+        name: 'Time A',
+        totalPoints: 3,
+        totalGames: 1,
+        totalVictories: 1,
+        totalDraws: 0,
+        totalLosses: 0,
+        goalsFavor: 3,
+        goalsOwn: 0,
+        goalsBalance: 3,
+        efficiency: '100.00'
+      },
+      {
+        name: 'Time C',
+        totalPoints: 0,
+        totalGames: 1,
+        totalVictories: 0,
+        totalDraws: 0,
+        totalLosses: 1,
+        goalsFavor: 0,
+        goalsOwn: 3,
+        goalsBalance: -3,
+        efficiency: '0.00'
+      }
+    ]);
+  });
+});
